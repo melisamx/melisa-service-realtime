@@ -1,0 +1,11 @@
+{
+  "name": "nerine-service-realtime",
+  "version": "1.0.0",
+  "author": "Luis Josafat Heredia Contreras",
+  "dependencies": {
+    "rethinkdb": "^2.3.3",
+    "socket.io": "^1.7.1",
+    "thinky": "^2.3.8",
+    "winston": "^2.3.0"
+  }
+}

@@ -1,0 +1,7 @@
+nbproject
+Service/*/node_modules
+Service/*/logs/*.log
+Service/*/nohup.out
+Service/*/npm-debug.log
+Service/*/database.log
+Service/*/database/database.json
