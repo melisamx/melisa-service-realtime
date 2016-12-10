@@ -11,6 +11,8 @@ var server = require('./Https'),
                 io.on('connection', api.onConnection);
                 emmiter.on('login failure', api.onLoginFailure);
                 emmiter.on('login success', api.onLoginSuccess);
+                emmiter.on('send message', api.onSendMessage);
+                emmiter.on('message received', api.onMessageReceived);
                 emmiter.emit('socketio listen', io);
                 
             });
@@ -23,7 +25,38 @@ var server = require('./Https'),
             
             socket.on('login', api.onLogin.bind(socket));
             socket.on('disconnect', api.onDisconnect.bind(socket));
+            socket.on('identity writing', api.onIdentityWriting.bind(socket));
+            socket.on('identity send message', api.onIdentitySendMessage.bind(socket));
             socket.emit('login', socket.id);
+            
+        },
+        
+        onMessageReceived: function(idSocket, idMessageLocal, idIdentityReceiver) {
+            
+            logger.info('send message received to %s', idSocket);
+            io.to(idSocket).emit('message received', idMessageLocal, idIdentityReceiver);
+            
+        },
+        
+        onSendMessage: function(idSocket, message) {
+            
+            io.to(idSocket).emit('identity send message', JSON.stringify(message));
+            
+            logger.info('send message success to', idSocket);
+            
+        },
+        
+        onIdentitySendMessage: function(idIdentity, message, idMessageLocal) {
+            
+            logger.info('sokect send message %s', message);
+            emmiter.emit('socketio send message', this.id, idIdentity, message, idMessageLocal);
+            
+        },
+        
+        onIdentityWriting: function(idSocket, idSocketEmisor) {
+            
+            console.log(arguments);
+            io.to(idSocket).emit('identity writing', idSocketEmisor);
             
         },
         

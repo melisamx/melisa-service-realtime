@@ -1,11 +1,13 @@
-var database = require('./Database'),
-    sockects = require('./Sockets'),
-    login = require('./logics/Login'),
-    disconnect = require('./logics/Disconnect'),
-    initial = require('./logics/Initial');
+var Database = require('./Database'),
+    Sockets = require('./Sockets'),
+    Login = require('./logics/Login'),
+    Disconnect = require('./logics/Disconnect'),
+    Initial = require('./logics/Initial'),
+    SendMessage = require('./logics/SendMessage');
 
-database.setup();
-initial.setup();
-sockects.setup();
-login.setup();
-disconnect.setup();
+Database.setup();
+Initial.setup();
+Sockets.setup();
+SendMessage.setup();
+Login.setup();
+Disconnect.setup();

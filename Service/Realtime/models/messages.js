@@ -5,6 +5,7 @@ var thinky = require(__dirname + '/../util/thinky.js'),
         id: type.string(),
         idIdentityTransmitter: type.string().required(),
         idIdentityReceiver: type.string().required(),
+        idMessageLocal: type.string().required(),
         status: type.string().required().enum([
             'wait-send',
             'server-received',
@@ -13,6 +14,7 @@ var thinky = require(__dirname + '/../util/thinky.js'),
         ]).required().default('server-received'),
         dateReceived: type.date(),
         dateRead: type.date(),
+        message: type.string(),
         createdAt: type.date().default(r.now())
     });
     
