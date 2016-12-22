@@ -34,7 +34,8 @@ var emmiter = require(__dirname + '/../Emitter'),
         loginSuccess: function(socket) {
             
             var identity = this;
-            
+            console.log('loginSuccess', identity);
+            console.log('loginSuccess', arguments);
             logger.info('login success, get others identittys');
             
             Identity.orderBy({
@@ -69,7 +70,7 @@ var emmiter = require(__dirname + '/../Emitter'),
         
         createIdentity: function(socket, identity) {
             
-            this.save().then(api.loginSuccess.bind(identity, socket)).
+            this.save().then(api.loginSuccess.bind(this, socket)).
             error(function(error) {
                 
                 logger.error('login failure, not create identity', error.message);
