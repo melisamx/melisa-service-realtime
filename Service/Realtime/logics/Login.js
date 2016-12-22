@@ -34,8 +34,7 @@ var emmiter = require(__dirname + '/../Emitter'),
         loginSuccess: function(socket) {
             
             var identity = this;
-            console.log('loginSuccess', identity);
-            console.log('loginSuccess', arguments);
+            
             logger.info('login success, get others identittys');
             
             Identity.orderBy({
