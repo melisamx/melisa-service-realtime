@@ -24,7 +24,7 @@ var server = require('./Https'),
         
         onConnection: function(socket) {
             
-            logger.info('sokect connection %s', socket.id);
+            logger.info('socket connection %s', socket.id);
             
             socket.on('login', api.onLogin.bind(socket));
             socket.on('disconnect', api.onDisconnect.bind(socket));
@@ -51,7 +51,7 @@ var server = require('./Https'),
         
         onIdentitySendMessage: function(idIdentity, message, idMessageLocal) {
             
-            logger.info('sokect send message %s', message);
+            logger.info('socket send message %s', message);
             emmiter.emit('socketio send message', this.id, idIdentity, message, idMessageLocal);
             
         },
@@ -65,21 +65,22 @@ var server = require('./Https'),
         
         onDisconnect: function() {
             
-            logger.info('sokect disconnect %s', this.id);
+            logger.info('socket disconnect %s', this.id);
             emmiter.emit('socketio disconnect', this.id);
-            io.emit('identity disconnected', this.id);
+            io.emit('socket disconnected', this.id);
             
         },
         
         onLogin: function(data) {
             
+            logger.info('socket on login');
             emmiter.emit('socketio login', this, data);
             
         },
         
         onLoginFailure: function(message) {
             
-            logger.info('sokectio login failure %s', message);
+            logger.info('socketio login failure %s', message);
             
         },
         
