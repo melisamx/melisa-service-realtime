@@ -5,3 +5,4 @@ Service/*/nohup.out
 Service/*/npm-debug.log
 Service/*/database.log
 Service/*/database/database.json
+Service/*/config/melisa1.json

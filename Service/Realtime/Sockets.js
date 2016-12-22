@@ -2,11 +2,12 @@ var server = require('./Https'),
     io = require('socket.io')(server),
     logger = require('./Logger'),
     emmiter = require('./Emitter'),
+    config = require('config'),
     api = {
         
         setup: function() {
             
-            server.listen(8044, function() {
+            server.listen(config.get('server.port'), function() {
                 
                 io.on('connection', api.onConnection);
                 emmiter.on('login failure', api.onLoginFailure);
@@ -16,6 +17,8 @@ var server = require('./Https'),
                 emmiter.emit('socketio listen', io);
                 
             });
+            
+            logger.info('server listen port %s', config.get('server.port'));
             
         },
         
