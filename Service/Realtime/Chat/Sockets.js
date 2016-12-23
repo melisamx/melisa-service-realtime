@@ -1,14 +1,18 @@
 var emmiter = require(__dirname + '/../Emitter'),
+    emmiterChat = require('./Emitter'),
     logger = require(__dirname + '/../Logger'),
+    SendMessage = require(__dirname + '/logics/SendMessage'),
     nsp,
     api = {
         
         setup: function() {
             
+            SendMessage.setup();
+            
             emmiter.on('socketio listen', api.onSocketListen);
             emmiter.on('login success', api.onLoginSuccess);
-            emmiter.on('send message', api.onSendMessage);
-            emmiter.on('message received', api.onMessageReceived);
+            emmiterChat.on('send message success', api.onSendMessage);
+            emmiterChat.on('message received', api.onMessageReceived);
             
         },
         
@@ -61,16 +65,15 @@ var emmiter = require(__dirname + '/../Emitter'),
         
         onIdentitySendMessage: function(idIdentity, message, idMessageLocal) {
             
-            logger.info('socket send message %s', message);
-            emmiter.emit('socketio send message', this.id, idIdentity, message, idMessageLocal);
+            logger.info('socket send message %s to identity %s', message, idIdentity);
+            emmiterChat.emit('send message', this.id, idIdentity, message, idMessageLocal);
             
         },
         
         onSendMessage: function(idSocket, message) {
             
+            logger.info('send message success to %s', idSocket);
             nsp.to(idSocket).emit('identity send message', JSON.stringify(message));
-            
-            logger.info('send message success to', idSocket);
             
         },
         
@@ -83,4 +86,6 @@ var emmiter = require(__dirname + '/../Emitter'),
         
     };
     
-module.exports = api;
+module.exports = {
+    setup: api.setup
+};

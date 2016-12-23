@@ -1,15 +1,15 @@
 var emmiter = require(__dirname + '/../Emitter'),
-    Identity = require(__dirname + '/../models/identities'),
-    Message = require(__dirname + '/../models/messages'),
-    logger = require(__dirname + '/../Logger'),
-    thinky = require(__dirname + '/../util/thinky.js'),
+    Identity = require(__dirname + '/../../models/identities'),
+    Message = require(__dirname + '/../../models/messages'),
+    logger = require(__dirname + '/../../Logger'),
+    thinky = require(__dirname + '/../../util/thinky.js'),
     Errors = thinky.Errors,
     r = thinky.r,
     api = {
         
         setup: function() {
-            
-            emmiter.on('socketio send message', api.onSendMessage);
+                       
+            emmiter.on('send message', api.onSendMessage);
             
         },
         
@@ -29,7 +29,8 @@ var emmiter = require(__dirname + '/../Emitter'),
             }).run().then(api.saveMessage.bind(message)).
             error(function(error) {
                 
-                emmiter.emit('identity error receive message', error.message);
+                logger.error('chat send message failure, imposible get identity, %s', error.message);
+                emmiter.emit('send message failure', error.message);
                 
             });
             
@@ -56,7 +57,7 @@ var emmiter = require(__dirname + '/../Emitter'),
             message.save().then(api.sendMessage.bind(message, this.idSocket)).
             error(function(error) {
                 
-                logger.error('send message failure, imposible save', error.message);
+                logger.error('chat send message failure, imposible save message, ', error.message);
                 emmiter.emit('send message failure', error.message);
                 
             });;
@@ -67,7 +68,7 @@ var emmiter = require(__dirname + '/../Emitter'),
             
             var message = this;
             
-            logger.info('send message saved success', message.id);
+            logger.info('chat send message saved success', message.id);
             emmiter.emit('message received', idSocket, message.idMessageLocal, message.idIdentityReceiver);
             
             Identity.filter(function(record) {
@@ -78,16 +79,16 @@ var emmiter = require(__dirname + '/../Emitter'),
                 
                 if( typeof identity[0] === 'undefined') {
                     
-                    logger.error('send message failure, no exist identity send');
+                    logger.error('chat send message failure, no exist identity receiver');
                     return;
                     
                 }
                 
-                emmiter.emit('send message', identity[0].idSocket, message);
+                emmiter.emit('send message success', identity[0].idSocket, message);
                 
             }).error(function(error) {
                 
-                logger.error('send message failure, %s', error.message);
+                logger.error('chat send message failure, imposible get receiver, %s', error.message);
                 emmiter.emit('send message failure', error.message);
                 
             });
